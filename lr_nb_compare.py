@@ -17,13 +17,15 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 
 ### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_ham_emails_dataset.csv'
 # Confidence threshold
-MIN_THRESHOLD = 0.2
-MAX_THRESHOLD = 0.9
+MIN_THRESHOLD = 0.4
+MAX_THRESHOLD = 0.7
 THRESHOLD_STEP = 0.1
 # Max number of words considered for tf-idf
 MIN_MAX_FEATURES = 100
-MAX_MAX_FEATURES = 15000
+MAX_MAX_FEATURES = 5000
 MAX_FEATURES_STEP = 100
 # Sample size proportions
 SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
@@ -44,7 +46,7 @@ def float_range(start, stop, step):
 
 # Load the dataset (with 'v1'/'v2' columns)
 try:
-    df = pd.read_csv('C:\\Users\\jappa\\Repos\\cs324\\data\\archive\\spam_ham_emails_dataset.csv', encoding='latin-1')
+    df = pd.read_csv(DATASET_FP, encoding='latin-1')
     df = df[['v1', 'v2']]
     df.columns = ['label', 'text']
     df['label'] = df['label'].map({'ham': 0, 'spam': 1})
@@ -70,7 +72,9 @@ total_num_samples_tests = len(SAMPLE_SIZES)
 tqdm_total = total_num_max_feat_tests * total_num_threshold_tests * total_num_samples_tests
 
 with tqdm(total=tqdm_total) as progress_bar:
+    # Loops through TF-IDF feature range
     for MAX_FEATURES in range(MIN_MAX_FEATURES, MAX_MAX_FEATURES, MAX_FEATURES_STEP):
+        #region Initialize and fit TF-IDF
         # Initialize and Fit TF-IDF once for this MAX_FEATURES
         tfidf_vectorizer = TfidfVectorizer(stop_words='english', max_features=MAX_FEATURES)
         tfidf_vectorizer.fit(X_train_full)
@@ -82,14 +86,16 @@ with tqdm(total=tqdm_total) as progress_bar:
         # Pre-calculate indices for quick sampling outside the inner loop
         # Create the full list of indices to sample from (0 to N-1)
         full_indices = np.arange(len(X_train_full))
+        #endregion
 
+        # Loops through confidence threshold range
         for THRESHOLD in float_range(MIN_THRESHOLD, MAX_THRESHOLD, THRESHOLD_STEP):
-            # Define the sample sizes (proportions of the full training set) to test
-
             results = []
 
+            # For each size (percentage) of dataset
             for size_proportion in SAMPLE_SIZES:
 
+                #region Calculate Sample Size and Get Random Samples from Training
                 # Calculate the actual number of samples
                 sample_size = int(size_proportion * len(X_train_full))
 
@@ -107,8 +113,9 @@ with tqdm(total=tqdm_total) as progress_bar:
                     # Subset the pre-vectorized data (fast operation on sparse matrix)
                     X_sample_vectorized = X_train_vectorized_full[sample_indices]
                     y_sample = y_train_full.iloc[sample_indices]
+                #endregion
 
-                # --- 1. Train and Evaluate Base Models ---
+                #region 1) Train and Evaluate Base Models (MNB and LR)
                 
                 # MNB
                 mnb_model = MultinomialNB()
@@ -123,9 +130,9 @@ with tqdm(total=tqdm_total) as progress_bar:
                 y_pred_lr = lr_model.predict(X_test_vectorized)
                 y_proba_lr = lr_model.predict_proba(X_test_vectorized)[:, 1]
                 accuracy_lr = accuracy_score(y_test, y_pred_lr)
+                #endregion
 
-
-                # --- 2. Hierarchical: LR Filter -> MNB Refinement ---
+                #region 2) Hierarchical: LR Filter -> MNB Analysis
 
                 # Identify indices where LR predicts spam with high confidence
                 mnb_refine_indices = np.where(y_proba_lr > THRESHOLD)[0]
@@ -140,9 +147,9 @@ with tqdm(total=tqdm_total) as progress_bar:
                     y_pred_hierarchical_lr_mnb[mnb_refine_indices] = y_pred_mnb_subset
 
                 accuracy_hierarchical_lr_mnb = accuracy_score(y_test, y_pred_hierarchical_lr_mnb)
+                #endregion
 
-
-                # --- 3. Hierarchical: MNB Filter -> LR Refinement ---
+                #region 3) Hierarchical: MNB Filter -> LR Analysis
 
                 # Identify indices where MNB predicts spam with high confidence
                 lr_refine_indices = np.where(y_proba_mnb > THRESHOLD)[0]
@@ -157,7 +164,9 @@ with tqdm(total=tqdm_total) as progress_bar:
                     y_pred_hierarchical_mnb_lr[lr_refine_indices] = y_pred_lr_subset
 
                 accuracy_hierarchical_mnb_lr = accuracy_score(y_test, y_pred_hierarchical_mnb_lr)
+                #endregion
 
+                #region Compare and update max accuracy scores for each model
                 if accuracy_mnb > max_mnb[0]:
                     max_mnb= accuracy_mnb, sample_size, THRESHOLD, MAX_FEATURES
                 if accuracy_lr > max_lr[0]:
@@ -166,11 +175,12 @@ with tqdm(total=tqdm_total) as progress_bar:
                     max_lr_mnb = accuracy_hierarchical_lr_mnb, sample_size, THRESHOLD, MAX_FEATURES
                 if accuracy_hierarchical_mnb_lr > max_mnb_lr[0]:
                     max_mnb_lr = accuracy_hierarchical_mnb_lr, sample_size, THRESHOLD, MAX_FEATURES
-                
+                #endregion
+
                 progress_bar.update(1)
 
                 # # Uncomment for single test visualization
-                # # --- 4. Store Results ---
+                # # 4) Store Results
                 # results.append({
                 #     'sample_proportion': size_proportion,
                 #     'sample_n': sample_size,
@@ -192,7 +202,7 @@ print(f'LR: {max_lr}')
 print(f'LR->MNB: {max_lr_mnb}')
 print(f'MNB->LR: {max_mnb_lr}')
 
-# # # --- 5. Visualization (uncomment if running single test to display graph) ---
+# # 5) Visualization (uncomment if running single test to display graph)
 # plt.figure(figsize=(12, 7))
 # plt.plot(results_df['sample_n'], results_df['MNB_Accuracy'], marker='o', label='1. MNB (Baseline)')
 # plt.plot(results_df['sample_n'], results_df['LR_Accuracy'], marker='x', label='2. LR (Baseline)')

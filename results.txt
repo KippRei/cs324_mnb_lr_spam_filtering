@@ -1,6 +1,8 @@
-PARAMETERS (Tested using 'spam_hard_ham_emails_dataset.csv'):
+PARAMETERS:
 -----------
 ### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_hard_ham_emails_dataset.csv'
 # Confidence threshold
 MIN_THRESHOLD = 0.4
 MAX_THRESHOLD = 0.9
@@ -23,9 +25,11 @@ LR->MNB: (0.9337748344370861, 480, 0.5, 1100)
 MNB->LR: (0.9337748344370861, 480, 0.5, 1100)
 
 
-PARAMETERS (Tested using 'spam_hard_ham_emails_dataset.csv'):
+PARAMETERS:
 -----------
 ### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_hard_ham_emails_dataset.csv'
 # Confidence threshold
 MIN_THRESHOLD = 0.2
 MAX_THRESHOLD = 0.9
@@ -48,9 +52,11 @@ LR->MNB: (0.9337748344370861, 480, 0.5, 1000)
 MNB->LR: (0.9337748344370861, 600, 0.4, 400)
 
 
-PARAMETERS (Tested using 'spam_ham_emails_dataset.csv'):
+PARAMETERS:
 -----------
 ### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_ham_emails_dataset.csv'
 # Confidence threshold
 MIN_THRESHOLD = 0.2
 MAX_THRESHOLD = 0.9
@@ -71,3 +77,110 @@ MNB: (0.9652173913043478, 3308, 0.2, 10500)
 LR: (0.9903381642512077, 4136, 0.2, 14300)
 LR->MNB: (0.9903381642512077, 4136, 0.8999999999999999, 14300)
 MNB-LR: (0.9884057971014493, 4136, 0.2, 7900)
+
+
+PARAMETERS:
+-----------
+### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_ham_emails_dataset.csv'
+# Confidence threshold
+MIN_THRESHOLD = 0.2
+MAX_THRESHOLD = 0.9
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 15000
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = None
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.966183574879227, 3722, 0.7, 8400)
+LR: (0.9864734299516909, 3308, 0.8999999999999999, 11700)
+LR->MNB: (0.9864734299516909, 3308, 0.8999999999999999, 11700)
+MNB->LR: (0.9835748792270531, 3722, 0.2, 4100)
+
+
+PARAMETERS:
+-----------
+### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_ham_emails_dataset.csv'
+# Confidence threshold
+MIN_THRESHOLD = 0.4
+MAX_THRESHOLD = 0.6
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 50000
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = None
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9777777777777777, 3722, 0.4, 9500)
+LR: (0.9922705314009662, 3722, 0.4, 28700)
+LR->MNB: (0.9816425120772947, 3722, 0.5, 7300)
+MNB->LR: (0.9845410628019323, 3308, 0.4, 7500)
+
+
+PARAMETERS:
+-----------
+### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_hard_ham_emails_dataset.csv'
+# Confidence threshold
+MIN_THRESHOLD = 0.4
+MAX_THRESHOLD = 0.6
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 50000
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = None
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9072847682119205, 540, 0.4, 1300)
+LR: (0.9205298013245033, 600, 0.4, 800)
+LR->MNB: (0.9271523178807947, 540, 0.5, 1400)
+MNB->LR: (0.9271523178807947, 540, 0.5, 1400)
+
+PARAMETERS:
+-----------
+### SCRIPT PARAMETERS ###
+# Dataset File path
+DATASET_FP = '.\\data\\archive\\spam_ham_emails_dataset.csv'
+# Confidence threshold
+MIN_THRESHOLD = 0.5
+MAX_THRESHOLD = 0.6
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 500
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.01, 0.1, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = 12
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9014492753623189, 413, 0.5, 300)
+LR: (0.8869565217391304, 413, 0.5, 200)
+LR->MNB: (0.8840579710144928, 372, 0.5, 200)
+MNB->LR: (0.8840579710144928, 372, 0.5, 200)
