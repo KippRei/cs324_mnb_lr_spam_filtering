@@ -1,0 +1,73 @@
+PARAMETERS (Tested using 'spam_hard_ham_emails_dataset.csv'):
+-----------
+### SCRIPT PARAMETERS ###
+# Confidence threshold
+MIN_THRESHOLD = 0.4
+MAX_THRESHOLD = 0.9
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 5000
+MAX_FEATURES_STEP = 200
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = 42
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9006622516556292, 420, 0.4, 1100)
+LR: (0.9205298013245033, 480, 0.4, 700)
+LR->MNB: (0.9337748344370861, 480, 0.5, 1100)
+MNB->LR: (0.9337748344370861, 480, 0.5, 1100)
+
+
+PARAMETERS (Tested using 'spam_hard_ham_emails_dataset.csv'):
+-----------
+### SCRIPT PARAMETERS ###
+# Confidence threshold
+MIN_THRESHOLD = 0.2
+MAX_THRESHOLD = 0.9
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 15000
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = 42
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9006622516556292, 480, 0.4, 1000)
+LR: (0.9271523178807947, 600, 0.4, 400)
+LR->MNB: (0.9337748344370861, 480, 0.5, 1000)
+MNB->LR: (0.9337748344370861, 600, 0.4, 400)
+
+
+PARAMETERS (Tested using 'spam_ham_emails_dataset.csv'):
+-----------
+### SCRIPT PARAMETERS ###
+# Confidence threshold
+MIN_THRESHOLD = 0.2
+MAX_THRESHOLD = 0.9
+THRESHOLD_STEP = 0.1
+# Max number of words considered for tf-idf
+MIN_MAX_FEATURES = 100
+MAX_MAX_FEATURES = 15000
+MAX_FEATURES_STEP = 100
+# Sample size proportions
+SAMPLE_SIZES = np.linspace(0.1, 1.0, 10) # Testing from 10% to 100%
+# Seed for reproducible results (set to None for randomized seed)
+RANDOM_STATE = 42
+
+RESULTS:
+--------
+Algorithm: (Accuracy %, Num of Samples, Confidence Threshold, Max TF-IDF Features)
+MNB: (0.9652173913043478, 3308, 0.2, 10500)
+LR: (0.9903381642512077, 4136, 0.2, 14300)
+LR->MNB: (0.9903381642512077, 4136, 0.8999999999999999, 14300)
+MNB-LR: (0.9884057971014493, 4136, 0.2, 7900)
